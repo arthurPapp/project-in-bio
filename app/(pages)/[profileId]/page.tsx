@@ -22,7 +22,9 @@ export default async function ProfilePage({
  
    const session = await auth();
  
-   const isOwner = profileData.userId === session?.user?.id;
+  const isOwner = profileData.userId === session?.user?.id;
+  
+  //const projects = await getProfileProjects(profileId);
   
   return (
     <div className="relative h-screen flex p-20 overflow-hidden">
