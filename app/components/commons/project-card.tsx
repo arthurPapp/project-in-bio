@@ -2,21 +2,20 @@
  
  import { ProjectData } from "@/app/server/get-profile-data";
  import Link from "next/link";
+import { formatUrl } from "../../lib/utils";
+import { useParams } from "next/navigation";
  
  export default function ProjectCard({
    project,
    isOwner,
    img,
  }: {
-   project: ProjectData;
-   isOwner: boolean;
+   project?: ProjectData;
+   isOwner?: boolean;
    img: string;
  }) {
-   const projectUrl = project.projectUrl;
-   const formattedUrl = projectUrl.startsWith("http")
-     ? projectUrl
-     : `https://${projectUrl}`;
- 
+   const { profileId } = useParams();
+  const formattedUrl = formatUrl(project?.projectUrl || "");
    function handleClick() {
      console.log("clicked"); // TODO: implementar analytics
    }
@@ -30,14 +29,14 @@
          <div className="flex flex-col gap-2">
            {isOwner && (
              <span className="uppercase text-xs font-bold text-accent-green">
-               {project.totalVisits || 0} cliques
+               {project?.totalVisits || 0} cliques
              </span>
            )}
  
            <div className="flex flex-col">
-             <span className="text-white font-bold">{project.projectName}</span>
+             <span className="text-white font-bold">{project?.projectName}</span>
              <span className="text-content-body text-sm">
-               {project.projectDescription}
+               {project?.projectDescription}
              </span>
            </div>
       </div>

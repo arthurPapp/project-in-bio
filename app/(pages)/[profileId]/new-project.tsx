@@ -9,7 +9,7 @@ import TextArea from "../../components/ui/text-area";
 import { useRouter } from "next/navigation";
 import React, { startTransition, useState } from "react";
 import { createProject } from "../../actions/create-project";
-import { compressFiles } from "../../lib/utils";
+import { compressFiles, handleImageInput, triggerImageInput } from "../../lib/utils";
  
 export default function NewProject({ profileId }: { profileId: string }) {
   const router = useRouter(); 
@@ -24,19 +24,7 @@ export default function NewProject({ profileId }: { profileId: string }) {
    const handleOpenModal = () => {
      setIsOpen(true);
    };
-  
-   function triggerImageInput(id: string) {
-    document.getElementById(id)?.click();
-  }
 
-  function handleImageInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0] ?? null;
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
-      return imageURL;
-    }
-    return null;
-  }
 
   async function handleCreateProject() {
     setIsCreatingProject(true);
@@ -125,6 +113,7 @@ export default function NewProject({ profileId }: { profileId: string }) {
                    placeholder="Digite o nome do projeto"
                    value={projectName}
                    onChange={(e) => setProjectName(e.target.value)}
+                   maxLength={50}
                  />
                </div>
                <div className="flex flex-col gap-1">
@@ -140,6 +129,7 @@ export default function NewProject({ profileId }: { profileId: string }) {
                    className="h-36"
                    value={projectDescription}
                    onChange={(e) => setProjectDescription(e.target.value)}
+                   maxLength={250}
                  />
                </div>
                <div className="flex flex-col gap-1">

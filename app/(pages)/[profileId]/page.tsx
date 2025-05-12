@@ -1,5 +1,4 @@
 import ProjectCard from "@/app/components/commons/project-card";
-import UserCard from "@/app/components/commons/user-card";
 import { Plus } from "lucide-react";
 import { TotalVisits } from "../../components/commons/total-visits";
 import Link from "next/link";
@@ -8,6 +7,8 @@ import { auth } from "../../lib/auth";
 import { getProfileData, getProfileProjects } from "../../server/get-profile-data";
 import NewProject from "./new-project";
 import { getDownloadURLFromPath } from "../../lib/firebase";
+import UserCard from "../../components/commons/user-card/user-card";
+import { increasProfilesVisitis } from "../../actions/increase-profile-visits";
 export default async function ProfilePage({
   params,
 }: {
@@ -19,13 +20,16 @@ export default async function ProfilePage({
  
    if (!profileData) return notFound();
  
-   // TODO: get projects
- 
+  console.log("profile " + profileData)
    const session = await auth();
  
   const isOwner = profileData.userId === session?.user?.id;
   
   const projects = await getProfileProjects(profileId);
+
+  if (!isOwner) {
+    await increasProfilesVisitis(profileId);
+  }
   
   return (
     <div className="relative h-screen flex p-20 overflow-hidden">
@@ -38,7 +42,7 @@ export default async function ProfilePage({
         </Link>
       </div>
       <div className="w-1/2 flex justify-center h-min">
-        <UserCard />
+        <UserCard profileData={profileData} isOwner={isOwner} />
       </div>
       <div className="w-full flex justify-center content-start gap-4 flex-wrap overflow-y-auto">
       {projects.map(async (project) => (
@@ -46,13 +50,13 @@ export default async function ProfilePage({
              key={project.id}
              project={project}
              isOwner={isOwner}
-             img={await getDownloadURLFromPath(project.imagePath)}
+             img={(await getDownloadURLFromPath(project.imagePath)) || ""}
            />
          ))}
         {isOwner && <NewProject profileId={profileId} />}
       </div>
       <div className="absolute bottom-4 right-0 left-0 w-min mx-auto">
-        <TotalVisits />
+        <TotalVisits totalVisits={profileData?.totalVisits} />
       </div>
     </div>
   );
