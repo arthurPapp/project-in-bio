@@ -4,22 +4,30 @@
  import Link from "next/link";
 import { formatUrl } from "../../lib/utils";
 import { useParams } from "next/navigation";
+import { increaseProjectVisits } from "../../actions/increase-project visits";
  
  export default function ProjectCard({
    project,
    isOwner,
    img,
+   name,
+   description,
  }: {
    project?: ProjectData;
    isOwner?: boolean;
-   img: string;
+     img?: string;
+     name?: string;
+     description?: string;
  }) {
    const { profileId } = useParams();
-  const formattedUrl = formatUrl(project?.projectUrl || "");
-   function handleClick() {
-     console.log("clicked"); // TODO: implementar analytics
+   const formattedUrl = formatUrl(project?.projectUrl || "");
+   
+   async function handleClick() {
+     if (!profileId || !project?.id || isOwner) return;
+     await increaseProjectVisits(profileId as string, project?.id as string);
    }
- 
+
+
   return (
     <Link href={formattedUrl} target="_blank" onClick={handleClick}>
        <div className="w-[340px] h-[132px] flex gap-5 bg-background-secondary p-3 rounded-[20px] border border-transparent hover:border-border-secondary">
@@ -34,9 +42,11 @@ import { useParams } from "next/navigation";
            )}
  
            <div className="flex flex-col">
-             <span className="text-white font-bold">{project?.projectName}</span>
+            <span className="text-white font-bold">
+              {name || project?.projectName}
+            </span>
              <span className="text-content-body text-sm">
-               {project?.projectDescription}
+               {description || project?.projectDescription}
              </span>
            </div>
       </div>

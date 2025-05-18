@@ -1,4 +1,4 @@
-import { Github, Linkedin, Instagram, Twitter } from "lucide-react"
+import { Github, Linkedin, Instagram, Twitter, Plus } from "lucide-react"
 import Button from "../../ui/button";
 import EditSocialLinks from "./edit-social-links";
 import Link from "next/link";
@@ -13,15 +13,15 @@ export default async function UserCard({
   isOwner,
 }: {
     profileData?: ProfileData
-    isOwner: boolean
+    isOwner?: boolean
 }) {
-  // const icons = [Github, Linkedin, Instagram, Twitter];
+  const icons = [Github, Linkedin, Instagram, Twitter, Plus];
   return (
     <div className="w-[348px] flex flex-col gap-5 items-center p-5 borderborder border-white border-opacity-10 bg-[#121212] rounded-3xl text-white">
       <div className="size-48">
         <img
           src={await getDownloadURLFromPath(profileData?.imagePath) || "/iconUser.png"}
-          alt="Arthur Dev"
+          alt="Profile Img"
           className="rounded-full object-cover w-full h-full"
         />
       </div>
@@ -82,14 +82,14 @@ export default async function UserCard({
           )}
          
          
-          {/* {
+          {!profileData && 
             icons.map((Icon, index) => (
               <button
                 key={index} className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
                 <Icon />
               </button>
             ))
-          } */}
+          }
          {isOwner && <EditSocialLinks socialMedias={profileData?.socialMedias} />} 
             
         </div>
@@ -111,6 +111,11 @@ export default async function UserCard({
                 <Button className="w-full">{profileData?.link3.title}</Button>
               </Link>
           )}
+          {!profileData &&
+            <button className="p-3 rounded-xl bg-[#1E1E1E] hover:bg-[#2E2E2E]">
+            <Plus />
+           </button>
+          }
            {isOwner && <AddCustomLink />} 
         </div>
       </div>

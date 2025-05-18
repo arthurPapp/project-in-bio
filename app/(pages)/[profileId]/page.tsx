@@ -55,9 +55,10 @@ export default async function ProfilePage({
          ))}
         {isOwner && <NewProject profileId={profileId} />}
       </div>
-      <div className="absolute bottom-4 right-0 left-0 w-min mx-auto">
-        <TotalVisits totalVisits={profileData?.totalVisits} />
-      </div>
+      {isOwner && (
+        <div className="absolute bottom-4 right-0 left-0 w-min mx-auto">
+          <TotalVisits totalVisits={profileData?.totalVisits} />
+        </div>)}
     </div>
   );
 }
