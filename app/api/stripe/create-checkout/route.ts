@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { stripe } from "../../../lib/stripe";
 import { auth } from "../../../lib/auth";
 import { db } from "../../../lib/firebase";
+import { trackServerEvent } from "../../../lib/mixpanel";
 
 export async function POST(req: Request) {
   const { metadata, isSubscription } = await req.json();
@@ -57,6 +58,12 @@ export async function POST(req: Request) {
     client_reference_id: userId,
     payment_method_types: isSubscription ? ["card"] : ["card", "boleto"]
   })
+
+  trackServerEvent("checkout_created", {
+    price: price,
+    isSubscription: isSubscription,
+    userId: userId,
+  });
 
   return NextResponse.json({
     sessionId: session.id,

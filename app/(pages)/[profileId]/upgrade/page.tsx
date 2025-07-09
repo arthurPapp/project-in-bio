@@ -1,5 +1,7 @@
+import { Metadata } from "next";
 import Header from "../../../components/landing-page/header";
 import PlanButtons from "./plan-buttons";
+import { getSEOTags } from "../../../lib/seo";
 
 export default async function UpgradPage() {
   return (

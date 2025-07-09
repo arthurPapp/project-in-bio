@@ -3,8 +3,18 @@ import Header from "../../components/landing-page/header";
 import TextInput from "../../components/ui/text-input";
 import Button from "../../components/ui/button";
 import CreateLinkForm from "./create-link-form";
+import { trackServerEvent } from "../../lib/mixpanel";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "ProjectInBio - Criar",
+  description: "ProjectInBio - A plataforma de criação de links para o seu projeto",
+};
 
 export default function CriarPage() {
+  trackServerEvent("page_view", {
+    page: "criar",
+  });
   return (
     <div>
       <Header />

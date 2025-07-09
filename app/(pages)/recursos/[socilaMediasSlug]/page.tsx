@@ -1,0 +1,26 @@
+import FAQ from "../../../components/landing-page/faq";
+import Header from "../../../components/landing-page/header";
+import Hero from "../../../components/landing-page/hero";
+import Pricing from "../../../components/landing-page/pricing";
+import VideoExplanation from "../../../components/landing-page/video-explanation";
+import { getTextsBySlug } from "../../../server/get-texts-by-slug";
+
+export default async function LinkInBio({
+  params,
+}: {
+    params: Promise<{ socilaMediasSlug: string }>
+  }) {
+  const { socilaMediasSlug } = await params;
+  
+  const texts = await getTextsBySlug(socilaMediasSlug);
+  return (
+    <div className="max-w-7xl mx-auto">
+    <Header />
+      <Hero
+        texts={texts} />
+    <VideoExplanation />
+    <Pricing />
+    <FAQ />
+  </div>
+  );
+}

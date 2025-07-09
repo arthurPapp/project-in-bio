@@ -1,0 +1,11 @@
+# *
+
+User-agent: * 
+Allow: /*
+
+#Host: https://wwww.dominios.com
+
+#Sitemap:
+Sitemap: https://www.dominio.com/sitemap.xml
+
+
